@@ -1,0 +1,10 @@
+a:hover {
+    color: #8b5cf6;
+    transform: translateY(-3px);
+}
+
+ a {
+ transition: color 0.3s linear;
+transition: transform 0.5s ease-in-out;
+transition: all 0.2s ease;
+}
