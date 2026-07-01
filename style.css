@@ -1,0 +1,307 @@
+/* ============================================
+   TOKENEK
+   Paletta: hűvös, mély indigó alap + korall-lazac
+   és menta kiegészítő. Megjelenés: "Körök" — a
+   barátság mint egymást metsző körök vizuális
+   motívuma (orbit avatar-klaszter a jelzőelem).
+   ============================================ */
+:root{
+  --ink: #14172B;
+  --ink-soft: #4A4E68;
+  --bg: #EEF0F7;
+  --surface: #FFFFFF;
+  --surface-tint: #F5F6FC;
+  --line: #E1E3F0;
+
+  --accent: #6C5CE7;      /* indigó-lila */
+  --accent-ink: #4E3FD6;
+  --coral: #FF6B6B;       /* jelölő / figyelmeztető */
+  --mint: #17B897;        /* elfogadás / siker */
+  --gold: #F4A73B;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow-soft: 0 8px 24px rgba(20,23,43,0.07);
+  --shadow-pop: 0 14px 40px rgba(76,63,214,0.18);
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+.hidden{display:none !important;}
+button{font-family:inherit;cursor:pointer;}
+ul{list-style:none;margin:0;padding:0;}
+input{font-family:inherit;}
+
+/* ---------- gombok ---------- */
+.btn{
+  border:none;border-radius:999px;
+  padding:11px 20px;font-weight:600;font-size:14px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:active{transform:scale(.97);}
+.btn--primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(108,92,231,.35);}
+.btn--primary:hover{background:var(--accent-ink);}
+.btn--ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line);}
+.btn--ghost:hover{background:var(--surface-tint);color:var(--ink);}
+.btn--small{padding:8px 14px;font-size:13px;}
+.btn--google{
+  background:#fff;color:#3c4043;border:1px solid #dadce0;
+  padding:12px 22px;font-size:14.5px;box-shadow:var(--shadow-soft);
+}
+.btn--google:hover{background:#f8f9fa;}
+.btn--accept{background:var(--mint);color:#fff;}
+.btn--accept:hover{background:#149c81;}
+.btn--decline{background:#fff;color:var(--coral);border:1px solid #ffd4d4;}
+.btn--decline:hover{background:#fff3f3;}
+.btn--add{background:var(--accent);color:#fff;}
+
+/* ============================================
+   BEJELENTKEZÉSI KÉPERNYŐ
+   ============================================ */
+.auth-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(108,92,231,.16), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(255,107,107,.14), transparent 45%),
+    var(--bg);
+  padding:24px;
+}
+.auth-card{
+  background:var(--surface);
+  border-radius:28px;
+  box-shadow:var(--shadow-pop);
+  padding:48px 40px 40px;
+  max-width:400px;width:100%;
+  text-align:center;
+}
+.auth-title{
+  font-family:var(--font-display);font-weight:700;font-size:30px;
+  margin:20px 0 8px;letter-spacing:-.02em;
+}
+.auth-subtitle{color:var(--ink-soft);font-size:15px;line-height:1.55;margin:0 0 28px;}
+.auth-hint{color:var(--coral);font-size:13px;margin-top:14px;min-height:16px;}
+
+/* jelzőelem: kis orbit-klaszter a login kártyán */
+.orbit-mini{position:relative;width:88px;height:88px;margin:0 auto;}
+.orbit-core{
+  position:absolute;inset:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-ink));
+}
+.orbit-dot{position:absolute;width:16px;height:16px;border-radius:50%;}
+.orbit-dot--1{top:0;left:36px;background:var(--coral);animation:float1 4s ease-in-out infinite;}
+.orbit-dot--2{top:36px;left:0;background:var(--mint);animation:float2 4.5s ease-in-out infinite;}
+.orbit-dot--3{top:36px;right:0;background:var(--gold);animation:float3 3.7s ease-in-out infinite;}
+.orbit-dot--4{bottom:0;left:36px;background:var(--accent);opacity:.6;animation:float1 5s ease-in-out infinite reverse;}
+@keyframes float1{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes float2{0%,100%{transform:translateX(0);}50%{transform:translateX(-6px);}}
+@keyframes float3{0%,100%{transform:translateX(0);}50%{transform:translateX(6px);}}
+@media (prefers-reduced-motion: reduce){
+  .orbit-dot{animation:none !important;}
+}
+
+/* ============================================
+   FŐ ALKALMAZÁS LAYOUT
+   ============================================ */
+.app-screen{
+  display:grid;
+  grid-template-columns:260px 1fr 320px;
+  height:100vh;
+}
+.sidebar{
+  background:var(--surface);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  padding:24px 18px;
+}
+.sidebar-brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;padding:0 4px;}
+.brand-mark{font-size:22px;color:var(--accent);}
+.brand-name{font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-.01em;}
+
+.tabs{display:flex;flex-direction:column;gap:4px;flex:1;}
+.tab-btn{
+  display:flex;align-items:center;gap:10px;
+  background:transparent;border:none;text-align:left;
+  padding:11px 12px;border-radius:var(--radius-sm);
+  font-size:14.5px;font-weight:500;color:var(--ink-soft);
+}
+.tab-btn:hover{background:var(--surface-tint);}
+.tab-btn.is-active{background:var(--surface-tint);color:var(--accent-ink);font-weight:600;}
+.tab-icon{font-size:15px;width:18px;text-align:center;}
+.tab-count{
+  margin-left:auto;background:var(--line);color:var(--ink-soft);
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;
+  font-family:var(--font-mono);
+}
+.tab-count--alert{background:var(--coral);color:#fff;}
+.tab-count:empty{display:none;}
+
+.sidebar-footer{border-top:1px solid var(--line);padding-top:16px;margin-top:12px;}
+.me{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.me-info{overflow:hidden;}
+.me-name{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.me-email{font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ---------- avatarok ---------- */
+.avatar{
+  width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  background:var(--surface-tint);border:2px solid var(--surface);
+  box-shadow:0 0 0 1px var(--line);position:relative;
+  cursor:pointer;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+.avatar--me{width:44px;height:44px;}
+.avatar--sm{width:36px;height:36px;}
+.avatar--lg{width:56px;height:56px;}
+.avatar-edit{
+  position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;
+  border-radius:50%;background:var(--accent);color:#fff;border:2px solid var(--surface);
+  font-size:9px;display:flex;align-items:center;justify-content:center;padding:0;
+}
+
+/* ============================================
+   TARTALOM / PANELEK
+   ============================================ */
+.content{padding:32px 36px;overflow-y:auto;}
+.panel{display:none;max-width:640px;}
+.panel.is-active{display:block;}
+.panel-header{margin-bottom:20px;}
+.panel-header--secondary{margin-top:32px;}
+.panel-header h2{font-family:var(--font-display);font-size:24px;margin:0 0 4px;letter-spacing:-.01em;}
+.panel-header h3{font-family:var(--font-display);font-size:16px;margin:0 0 4px;color:var(--ink-soft);}
+.panel-sub{color:var(--ink-soft);font-size:14px;margin:0;}
+
+.empty-state{
+  color:var(--ink-soft);font-size:14px;background:var(--surface-tint);
+  border:1px dashed var(--line);border-radius:var(--radius-md);
+  padding:22px;text-align:center;line-height:1.6;
+}
+
+/* orbit-klaszter a barátok fül tetején, a saját avatart körülvéve */
+.orbit-header{position:relative;height:0;}
+.orbit-header:not(:empty){height:70px;margin-bottom:8px;}
+.orbit-header img{
+  position:absolute;width:34px;height:34px;border-radius:50%;
+  object-fit:cover;border:2px solid var(--surface);box-shadow:var(--shadow-soft);
+}
+
+/* ---------- lista elemek (barát / kérés / keresés) ---------- */
+.people-list{display:flex;flex-direction:column;gap:6px;}
+.person{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-md);padding:10px 14px;
+  transition:box-shadow .15s ease, border-color .15s ease;
+}
+.person:hover{box-shadow:var(--shadow-soft);border-color:#d7d9ec;}
+.person-name{font-weight:600;font-size:14.5px;}
+.person-sub{font-size:12.5px;color:var(--ink-soft);}
+.person-main{flex:1;display:flex;align-items:center;gap:12px;cursor:pointer;min-width:0;}
+.person-actions{display:flex;gap:8px;flex-shrink:0;}
+.person-badge{
+  font-size:11px;font-family:var(--font-mono);color:var(--mint);
+  background:rgba(23,184,151,.1);padding:3px 8px;border-radius:999px;
+}
+.person-badge--pending{color:var(--gold);background:rgba(244,167,59,.12);}
+
+/* ============================================
+   CHAT PANEL
+   ============================================ */
+.chat-panel{
+  background:var(--surface);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;
+}
+.chat-empty{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--ink-soft);font-size:14px;text-align:center;padding:24px;gap:10px;
+}
+.chat-empty-mark{font-size:30px;color:var(--line);}
+.chat-active{display:flex;flex-direction:column;height:100%;}
+.chat-active.hidden{display:none;}
+.chat-header{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--line);
+}
+.chat-header-name{font-weight:700;font-size:14.5px;}
+.chat-header-status{font-size:12px;color:var(--mint);}
+.chat-close{margin-left:auto;border-radius:50%;width:30px;height:30px;padding:0;justify-content:center;}
+
+.chat-messages{
+  flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:8px;
+}
+.msg{
+  max-width:80%;padding:9px 13px;border-radius:16px;font-size:13.5px;line-height:1.45;
+  word-break:break-word;
+}
+.msg--me{
+  align-self:flex-end;background:var(--accent);color:#fff;
+  border-bottom-right-radius:4px;
+}
+.msg--them{
+  align-self:flex-start;background:var(--surface-tint);color:var(--ink);
+  border-bottom-left-radius:4px;
+}
+.msg-time{
+  font-family:var(--font-mono);font-size:9.5px;opacity:.6;margin-top:3px;display:block;
+}
+
+.chat-form{display:flex;gap:8px;padding:14px;border-top:1px solid var(--line);}
+.chat-form input{
+  flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 16px;
+  font-size:13.5px;background:var(--surface-tint);
+}
+.chat-form input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+
+/* ---------- keresés ---------- */
+.search-box{display:flex;gap:8px;margin-bottom:18px;}
+.search-box input{
+  flex:1;border:1px solid var(--line);border-radius:999px;padding:11px 18px;
+  font-size:14px;background:var(--surface-tint);
+}
+.search-box input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+
+/* ---------- lightbox (profilkép nagyítva) ---------- */
+.lightbox{
+  position:fixed;inset:0;background:rgba(20,23,43,.75);
+  display:flex;align-items:center;justify-content:center;z-index:50;
+  cursor:zoom-out;padding:24px;
+}
+.lightbox img{
+  max-width:min(400px,90vw);max-height:80vh;border-radius:20px;
+  box-shadow:0 30px 60px rgba(0,0,0,.4);
+}
+
+/* focus visibility mindenhol */
+button:focus-visible, input:focus-visible, .avatar:focus-visible{
+  outline:2px solid var(--accent-ink);outline-offset:2px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 980px){
+  .app-screen{grid-template-columns:220px 1fr;}
+  .chat-panel{
+    position:fixed;inset:0;width:100%;max-width:none;
+    box-shadow:none;z-index:40;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  .chat-panel.is-open{transform:translateX(0);}
+}
+@media (max-width: 680px){
+  .app-screen{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .content{padding:20px;padding-bottom:90px;}
+}

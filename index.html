@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Körök · Barátok &amp; Chat</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===================== BEJELENTKEZÉSI KÉPERNYŐ ===================== -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="orbit-mini" aria-hidden="true">
+      <span class="orbit-dot orbit-dot--1"></span>
+      <span class="orbit-dot orbit-dot--2"></span>
+      <span class="orbit-dot orbit-dot--3"></span>
+      <span class="orbit-dot orbit-dot--4"></span>
+      <span class="orbit-core"></span>
+    </div>
+    <h1 class="auth-title">Körök</h1>
+    <p class="auth-subtitle">Jelöld ki a barátaidat, fogadd el a kéréseket, és beszélgess velük — egy helyen.</p>
+    <button id="googleLoginBtn" class="btn btn--google">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/>
+        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/>
+      </svg>
+      <span>Bejelentkezés Google fiókkal</span>
+    </button>
+    <p class="auth-hint" id="authError"></p>
+  </div>
+</div>
+
+<!-- ===================== FŐ ALKALMAZÁS ===================== -->
+<div id="appScreen" class="app-screen hidden">
+
+  <!-- Oldalsáv -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark">◍</span>
+      <span class="brand-name">Körök</span>
+    </div>
+
+    <nav class="tabs">
+      <button class="tab-btn is-active" data-tab="friends">
+        <span class="tab-icon">☺</span> Barátok
+        <span class="tab-count" id="friendsCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="requests">
+        <span class="tab-icon">✉</span> Kérések
+        <span class="tab-count tab-count--alert" id="requestsCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="search">
+        <span class="tab-icon">⌕</span> Keresés
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="me" id="meBlock">
+        <div class="avatar avatar--me" id="myAvatarWrap">
+          <img id="myAvatarImg" src="" alt="Profilképed" />
+          <button id="changeAvatarBtn" class="avatar-edit" title="Profilkép cseréje">✎</button>
+          <input type="file" id="avatarFileInput" accept="image/*" hidden />
+        </div>
+        <div class="me-info">
+          <div class="me-name" id="myName">—</div>
+          <div class="me-email" id="myEmail">—</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn btn--ghost btn--small">Kijelentkezés</button>
+    </div>
+  </aside>
+
+  <!-- Fő tartalom -->
+  <main class="content">
+
+    <!-- BARÁTOK PANEL -->
+    <section class="panel is-active" id="panel-friends">
+      <header class="panel-header">
+        <h2>Barátaid</h2>
+        <p class="panel-sub">Kattints egy névre a beszélgetéshez.</p>
+      </header>
+      <div id="friendsOrbit" class="orbit-header"></div>
+      <ul id="friendsList" class="people-list"></ul>
+      <p id="friendsEmpty" class="empty-state hidden">
+        Még nincs egy barátod sem. Ugorj a <strong>Keresés</strong> fülre, és jelölj ki valakit!
+      </p>
+    </section>
+
+    <!-- KÉRÉSEK PANEL -->
+    <section class="panel" id="panel-requests">
+      <header class="panel-header">
+        <h2>Bejövő kérések</h2>
+        <p class="panel-sub">Fogadd el vagy utasítsd el a jelöléseket.</p>
+      </header>
+      <ul id="requestsList" class="people-list"></ul>
+      <p id="requestsEmpty" class="empty-state hidden">Nincs függőben lévő kérésed.</p>
+
+      <header class="panel-header panel-header--secondary">
+        <h3>Elküldött kérések</h3>
+      </header>
+      <ul id="outgoingList" class="people-list"></ul>
+      <p id="outgoingEmpty" class="empty-state hidden">Nem küldtél még kérést.</p>
+    </section>
+
+    <!-- KERESÉS PANEL -->
+    <section class="panel" id="panel-search">
+      <header class="panel-header">
+        <h2>Barát keresése</h2>
+        <p class="panel-sub">Írd be a nevet, ahogy a Google fiókjában szerepel.</p>
+      </header>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Pl. Kovács Anna" autocomplete="off" />
+        <button id="searchBtn" class="btn btn--primary btn--small">Keresés</button>
+      </div>
+      <ul id="searchResults" class="people-list"></ul>
+      <p id="searchEmpty" class="empty-state hidden">Nincs találat.</p>
+    </section>
+
+  </main>
+
+  <!-- CHAT PANEL -->
+  <aside class="chat-panel" id="chatPanel">
+    <div class="chat-empty" id="chatEmptyState">
+      <div class="chat-empty-mark">◍</div>
+      <p>Válassz egy barátot a beszélgetéshez.</p>
+    </div>
+
+    <div class="chat-active hidden" id="chatActive">
+      <header class="chat-header">
+        <img id="chatAvatar" class="avatar avatar--sm" src="" alt="" />
+        <div>
+          <div class="chat-header-name" id="chatName">—</div>
+          <div class="chat-header-status">barát</div>
+        </div>
+        <button id="closeChatBtn" class="btn btn--ghost btn--small chat-close">✕</button>
+      </header>
+      <div class="chat-messages" id="chatMessages"></div>
+      <form id="chatForm" class="chat-form">
+        <input type="text" id="chatInput" placeholder="Írj üzenetet…" autocomplete="off" />
+        <button type="submit" class="btn btn--primary btn--small">Küldés</button>
+      </form>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Profilkép megtekintő lightbox -->
+<div id="lightbox" class="lightbox hidden">
+  <img id="lightboxImg" src="" alt="Profilkép" />
+</div>
+
+<!-- Firebase SDK (compat, script tag alapú, build nélkül) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
